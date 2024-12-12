@@ -31,6 +31,7 @@ let gameState = {
 // API endpoints
 app.use('/api', apiRoutes);
 
+// Manejar conexiones de clientes
 io.on('connection', (socket) => {
 
     // Enviar estado inicial del juego al cliente
@@ -43,17 +44,28 @@ io.on('connection', (socket) => {
 
     // Manejar actualización de la posición de una carta
     socket.on('updateCardPosition', (cardState) => {
-        const cardIndex = gameState.cards.findIndex(card => card.id === cardState.id);
+        try {
+            const cardIndex = gameState.cards.findIndex(card => card.id === cardState.id);
 
-        if (cardIndex !== -1) {
-            gameState.cards[cardIndex] = cardState;
-        } else {
-            gameState.cards.push(cardState);
+            if (cardIndex !== -1) {
+                gameState.cards[cardIndex] = cardState;
+            } else {
+                gameState.cards.push(cardState);
+            }
+
+            // Emitir el estado actualizado a todos los clientes
+            io.emit('gameState', gameState);
+        } catch (error) {
+            console.error('Error updating card position:', error);
+            socket.emit('error', { message: 'Failed to update card position' });
         }
-
-        // Emitir el estado actualizado a todos los clientes
-        io.emit('gameState', gameState);
     });
+});
+
+// Manejo de errores global
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
 });
 
 // Iniciar el servidor
