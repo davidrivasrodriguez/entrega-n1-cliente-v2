@@ -1,0 +1,22 @@
+{
+    "spanish": {
+      "suits": ["espada", "oro", "basto", "copa"],
+      "cardsPerSuit": 10,
+      "imageUrls": {
+        "espada": "images/espadas.jpg",
+        "oro": "images/oro.jpg",
+        "basto": "images/bastos.png",
+        "copa": "images/copa.jpg"
+      }
+    },
+    "poker": {
+      "suits": ["hearts", "diamonds", "clubs", "spades"],
+      "cardsPerSuit": 13,
+      "imageUrls": {
+        "hearts": "images/hearts.png",
+        "diamonds": "images/diamonds.png",
+        "clubs": "images/clubs.png",
+        "spades": "images/spades.png"
+      }
+    }
+  }
