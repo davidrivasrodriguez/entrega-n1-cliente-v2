@@ -1,7 +1,7 @@
 export const uiDrag = {
-    init: (dropZones, notes) => {
+    init: (dropZones, notes, socket) => {
         document.querySelectorAll(dropZones).forEach((zone) => {
-            zone.addEventListener("drop", async (event) => {
+            zone.addEventListener("drop", (event) => {
                 event.preventDefault();
                 const cardId = event.dataTransfer.getData("text/plain");
                 const card = document.getElementById(cardId);
@@ -20,17 +20,11 @@ export const uiDrag = {
                     }
 
                     // Enviar la posición de la carta al servidor
-                    await fetch(`http://localhost:3000/api/cards/${cardId}`, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            id: cardId,
-                            suit: card.dataset.suit,
-                            left: card.style.left,
-                            top: card.style.top
-                        })
+                    socket.emit('updateCardPosition', {
+                        id: cardId,
+                        suit: card.dataset.suit,
+                        left: card.style.left,
+                        top: card.style.top
                     });
                 }
             });

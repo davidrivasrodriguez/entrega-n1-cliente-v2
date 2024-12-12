@@ -2,18 +2,21 @@ import { uiDrag } from "./uiDrag.js";
 import { deckBuilder } from "./deckBuilder.js";
 import { playerDeck } from "./playerDeck.js";
 
+const socket = io('http://localhost:3000');
+
 const initializeDeck = async (deckType) => {
     const cardsContainer = document.getElementById('cards-container');
     cardsContainer.innerHTML = '';
 
     await deckBuilder.builder(deckType);
     // playerDeck.deckShuffle();
-    uiDrag.init(".drop-zone", ".card");
+    uiDrag.init(".drop-zone", ".card", socket);
 
     // Cargar las posiciones de las cartas desde el servidor
-    const response = await fetch('http://localhost:3000/api/state');
-    const gameState = await response.json();
+    socket.emit('getGameState');
+};
 
+socket.on('gameState', (gameState) => {
     gameState.cards.forEach(cardState => {
         const card = document.getElementById(cardState.id);
         if (card) {
@@ -27,7 +30,7 @@ const initializeDeck = async (deckType) => {
             }
         }
     });
-};
+});
 
 // document.getElementById('deck-type').addEventListener('change', (event) => {
 //     const deckType = event.target.value;
