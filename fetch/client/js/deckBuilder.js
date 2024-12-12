@@ -1,6 +1,8 @@
 import { CardContainer } from './deckBuilder/cardContainer.js';
 
+// Objeto que representa el constructor de mazos
 export const deckBuilder = {
+    // Método para construir un mazo basado en el tipo de mazo proporcionado
     builder: async (deckType) => {
         const response = await fetch('js/deckBuilder/deckModels.json');
         if (!response.ok) {

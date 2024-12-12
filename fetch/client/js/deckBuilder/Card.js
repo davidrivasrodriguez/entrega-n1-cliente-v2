@@ -1,3 +1,4 @@
+// Clase que representa una carta
 export class Card {
     constructor(id, suit, value, imageUrl) {
         this.id = id;
@@ -6,6 +7,7 @@ export class Card {
         this.imageUrl = imageUrl;
     }
 
+    // Método para crear el elemento HTML de la carta
     createCardElement() {
         const card = document.createElement('div');
         card.classList.add('card');
